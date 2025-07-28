@@ -1,7 +1,7 @@
 import { generateMediaLabel } from './helpers/index.js';
 import { onPrimaryClick, onSecondaryClick, onMiddleClick, onScroll } from 'src/lib/shared/eventHandlers';
 import { bind, Variable } from 'astal';
-import { Astal } from 'astal/gtk3';
+import { Astal, Gtk } from 'astal/gtk3';
 import AstalMpris from 'gi://AstalMpris?version=0.1';
 import { BarBoxChild } from 'src/components/bar/types.js';
 import { activePlayer, mediaTitle, mediaAlbum, mediaArtist } from 'src/services/media';
@@ -9,6 +9,8 @@ import options from 'src/configuration';
 import { runAsyncCommand } from '../../utils/input/commandExecutor';
 import { throttledScrollHandler } from '../../utils/input/throttle';
 import { openDropdownMenu } from '../../utils/menu';
+import { PlayPause } from 'src/components/menus/media/components/controls/PlayPause.js';
+import { NextTrack, PreviousTrack } from 'src/components/menus/media/components/controls/Tracks.js';
 
 const mprisService = AstalMpris.get_default();
 const {
@@ -30,9 +32,15 @@ Variable.derive([bind(show_active_only), bind(mprisService, 'players')], (showAc
 });
 
 const Media = (): BarBoxChild => {
-    activePlayer.set(mprisService.get_players()[0]);
+    mprisService.get_players().forEach((player) => {
+        if (player.get_identity().includes('Youtube Music')) {
+            activePlayer.set(player);
+        }
+    });
 
     const songIcon = Variable('');
+
+    const songArtUrl = Variable('');
 
     const mediaLabel = Variable.derive(
         [
@@ -46,7 +54,14 @@ const Media = (): BarBoxChild => {
             bind(mediaArtist),
         ],
         () => {
-            return generateMediaLabel(truncation_size, show_label, format, songIcon, activePlayer);
+            return generateMediaLabel(
+                truncation_size,
+                show_label,
+                format,
+                songArtUrl,
+                songIcon,
+                activePlayer,
+            );
         },
     );
 
@@ -64,19 +79,31 @@ const Media = (): BarBoxChild => {
     );
 
     const component = (
-        <box
-            className={componentClassName()}
-            onDestroy={() => {
-                songIcon.drop();
-                mediaLabel.drop();
-                componentClassName.drop();
-            }}
-        >
-            <label
-                className={'bar-button-icon media txt-icon bar'}
-                label={bind(songIcon).as((icn) => icn || '󰝚')}
-            />
-            <label className={'bar-button-label media'} label={mediaLabel()} />
+        <box>
+            <box
+                className={componentClassName()}
+                onDestroy={() => {
+                    songIcon.drop();
+                    songArtUrl.drop();
+                    mediaLabel.drop();
+                    componentClassName.drop();
+                }}
+            >
+                {songArtUrl.get() === '' ? (
+                    <label
+                        className={'bar-button-icon media txt-icon bar'}
+                        label={bind(songIcon).as((icn) => icn || '󰝚')}
+                    />
+                ) : (
+                    <box
+                        className={'bar-button-image'}
+                        halign={Gtk.Align.CENTER}
+                        vexpand={false}
+                        css={bind(songArtUrl).as((songArt) => `background-image: url('${songArt}')`)}
+                    />
+                )}
+                <label className={'bar-button-label media'} label={mediaLabel()} />
+            </box>
         </box>
     );
 
