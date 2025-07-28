@@ -88,6 +88,9 @@ export class MediaPlayerService {
      * @param addedPlayer The player that was added
      */
     private _handlePlayerAdded(addedPlayer: AstalMpris.Player): void {
+        if(addedPlayer.get_identity().includes('YouTube Music')) {
+            this.activePlayer.set(addedPlayer);
+        }
         if (this.activePlayer.get() === undefined) {
             this.activePlayer.set(addedPlayer);
         }

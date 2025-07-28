@@ -20,6 +20,7 @@ const getIconForPlayer = (playerName: string): string => {
         ['Discord', ''],
         ['Plex', '󰚺'],
         ['Spotify', '󰓇'],
+        ['Youtube Music', ''],
         ['Vlc', '󰕼'],
         ['Mpv', ''],
         ['Rhythmbox', '󰓃'],
@@ -76,8 +77,10 @@ export const generateMediaLabel = (
     truncation_size: Opt<number>,
     show_label: Opt<boolean>,
     format: Opt<string>,
+    songArtUrl: Variable<string>,
     songIcon: Variable<string>,
     activePlayer: Variable<AstalMpris.Player | undefined>,
+
 ): string => {
     const currentPlayer = activePlayer.get();
 
@@ -88,6 +91,8 @@ export const generateMediaLabel = (
 
     const { title, identity, artist, album, busName } = currentPlayer;
     songIcon.set(getIconForPlayer(identity));
+
+    songArtUrl.set(currentPlayer.art_url);
 
     const mediaTags: MediaTags = {
         title: title,

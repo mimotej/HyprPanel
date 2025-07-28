@@ -12,7 +12,21 @@
     font-size: 1em;
     min-width: 0.7em;
 }
+.bar-button-image {
+    min-width: 0.7em;
+    min-height: 0.7em;
+    padding: $bar-buttons-padding_y 0em;
+    padding-left: $bar-buttons-padding_x;
+    border-radius: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding-right: 0.5em;
+}
+.media-indicator-bar-controls {
+    min-width: 3em;
 
+}
 .style2 {
     .bar-button-icon {
         border-top-left-radius: $bar-buttons-radius;
