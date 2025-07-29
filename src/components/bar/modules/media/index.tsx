@@ -89,18 +89,20 @@ const Media = (): BarBoxChild => {
                     componentClassName.drop();
                 }}
             >
-                {songArtUrl.get() === '' ? (
-                    <label
-                        className={'bar-button-icon media txt-icon bar'}
-                        label={bind(songIcon).as((icn) => icn || '󰝚')}
-                    />
-                ) : (
-                    <box
-                        className={'bar-button-image'}
-                        halign={Gtk.Align.CENTER}
-                        vexpand={false}
-                        css={bind(songArtUrl).as((songArt) => `background-image: url('${songArt}')`)}
-                    />
+                {bind(songArtUrl).as((songArt) =>
+                    songArt === '' ? (
+                        <label
+                            className={'bar-button-icon media txt-icon bar'}
+                            label={bind(songIcon).as((icn) => icn || '󰝚')}
+                        />
+                    ) : (
+                        <box
+                            className={'bar-button-image'}
+                            halign={Gtk.Align.CENTER}
+                            vexpand={false}
+                            css={bind(songArtUrl).as((songArt) => `background-image: url('${songArt}')`)}
+                        />
+                    ),
                 )}
                 <label className={'bar-button-label media'} label={mediaLabel()} />
             </box>
