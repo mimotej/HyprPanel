@@ -26,6 +26,7 @@ const {
     showApplicationIcons,
     applicationIconOncePerWorkspace,
     applicationIconMap,
+    showWorkspacesWithRules,
     applicationIconEmptyWorkspace,
     applicationIconFallback,
 } = options.bar.workspaces;
@@ -56,6 +57,7 @@ export const WorkspaceModule = ({ monitor }: WorkspaceModuleProps): JSX.Element 
             bind(applicationIconMap),
             bind(applicationIconEmptyWorkspace),
             bind(applicationIconFallback),
+            bind(showWorkspacesWithRules),
             bind(matugen),
             bind(smartHighlight),
             bind(hyprlandService, 'clients'),
@@ -86,6 +88,7 @@ export const WorkspaceModule = ({ monitor }: WorkspaceModuleProps): JSX.Element 
             applicationIconMapping: ApplicationIcons,
             applicationIconEmptyWorkspace: string,
             applicationIconFallback: string,
+            showWorkspacesWithRules: boolean,
             matugenEnabled: boolean,
             smartHighlightEnabled: boolean,
             clients: AstalHyprland.Client[],
@@ -98,12 +101,13 @@ export const WorkspaceModule = ({ monitor }: WorkspaceModuleProps): JSX.Element 
                 wsRules,
                 monitor,
                 isMonitorSpecific,
+                showWorkspacesWithRules,
                 monitorList,
             );
 
             return workspacesToRender.map((wsId, index) => {
                 const appIcons = displayApplicationIcons
-                    ? getAppIcon(wsId, appIconOncePerWorkspace, {
+                    ? wsId + ' ' + getAppIcon(wsId, appIconOncePerWorkspace, {
                           iconMap: applicationIconMapping,
                           defaultIcon: applicationIconFallback,
                           emptyIcon: applicationIconEmptyWorkspace,

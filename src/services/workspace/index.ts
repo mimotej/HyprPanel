@@ -52,6 +52,7 @@ export class WorkspaceService {
         workspaceMonitorRules: WorkspaceMonitorMap,
         monitorId: number,
         isMonitorSpecific: boolean,
+        showWorkspacesWithRules: boolean,
         hyprlandMonitorInstances: AstalHyprland.Monitor[],
     ): number[] {
         let allPotentialWorkspaces = range(totalWorkspaces || 8);
@@ -107,8 +108,7 @@ export class WorkspaceService {
                     hyprlandMonitorInstances,
                 );
             });
-
-            allPotentialWorkspaces = unique([...activeWorkspacesForCurrentMonitor, ...validWorkspaceNumbers]);
+            allPotentialWorkspaces = unique([...activeWorkspacesForCurrentMonitor, ... showWorkspacesWithRules ? validWorkspaceNumbers : []]);
         } else {
             allPotentialWorkspaces = unique([...allPotentialWorkspaces, ...activeWorkspaceIds]);
         }
