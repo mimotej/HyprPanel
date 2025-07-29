@@ -218,6 +218,11 @@ export const BarSettings = (): JSX.Element => {
                     type="boolean"
                 />
                 <Option
+                    opt={options.bar.workspaces.showWorkspacesWithRules}
+                    title="Show Workspace that have rules attached to them"
+                    type="boolean"
+                />
+                <Option
                     opt={options.bar.workspaces.showAllActive}
                     title="Mark Active Workspace On All Monitors"
                     subtitle="Marks the currently active workspace on each monitor."

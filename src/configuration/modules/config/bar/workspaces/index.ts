@@ -17,6 +17,7 @@ export default {
     applicationIconMap: opt<ApplicationIcons>({}),
     applicationIconFallback: opt('󰣆'),
     applicationIconEmptyWorkspace: opt(''),
+    showWorkspacesWithRules: opt(false),
     numbered_active_indicator: opt<ActiveWsIndicator>('underline'),
     icons: {
         available: opt(''),
