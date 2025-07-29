@@ -108,7 +108,10 @@ export class WorkspaceService {
                     hyprlandMonitorInstances,
                 );
             });
-            allPotentialWorkspaces = unique([...activeWorkspacesForCurrentMonitor, ... showWorkspacesWithRules ? validWorkspaceNumbers : []]);
+            allPotentialWorkspaces = unique([
+                ...activeWorkspacesForCurrentMonitor,
+                ...(showWorkspacesWithRules ? validWorkspaceNumbers : []),
+            ]);
         } else {
             allPotentialWorkspaces = unique([...allPotentialWorkspaces, ...activeWorkspaceIds]);
         }
